@@ -1,0 +1,18 @@
+tubetalk.ai_api/
+    .gitignore
+    folder_structure.txt
+    get_folder_structure.py
+    test.py
+    __init__.py
+    app/
+        Home.py
+        __init__.py
+        sections/
+            chatbot_ui.py
+            quiz_ui.py
+            summary_ui.py
+            topics_ui.py
+        utils/
+            api_client.py
+            config.py
+            sessioin_manager.py
