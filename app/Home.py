@@ -1,5 +1,6 @@
 import streamlit as st
 from app.sections import chatbot_ui, quiz_ui, summary_ui, topics_ui
+from app.utils.utility_functions import get_embed_url
 
 # Page config
 st.set_page_config(page_title="TubeTalk AI", layout="wide")
@@ -11,6 +12,8 @@ if "video_url" not in st.session_state:
     st.session_state.video_url = ""
 if "thread_id" not in st.session_state:
     st.session_state.thread_id = ""
+if "video_timestamp" not in st.session_state:
+    st.session_state.video_timestamp = 0
 
 st.sidebar.title("TubeTalk AI Settings")
 
@@ -32,13 +35,73 @@ if submitted:
 st.title("TubeTalk AI")
 
 if st.session_state.started:
-    # Create two columns: left for video, right for content
-    col1, col2 = st.columns([1, 2])  # Video takes 1/3, content takes 2/3
+    # Custom CSS to make col2 (tabs section) sticky and hide scrollbars
+    st.markdown("""
+        <style>
+        /* Make the main content area have fixed height */
+        .main .block-container {
+            max-width: 100%;
+            padding-top: 1rem;
+        }
+        
+        /* Make col2 (second column with tabs) sticky */
+        div[data-testid="stHorizontalBlock"] > div:last-child {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+            z-index: 10;
+        }
+        
+        /* Allow col1 (video column) to scroll normally */
+        div[data-testid="stHorizontalBlock"] > div:first-child {
+            overflow-y: auto;
+        }
+        
+        /* Ensure tabs content area is scrollable if needed */
+        div[data-testid="stHorizontalBlock"] > div:last-child [data-testid="stVerticalBlock"] {
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+        
+        /* Hide scrollbars but keep functionality */
+        div[data-testid="stHorizontalBlock"] > div:first-child::-webkit-scrollbar,
+        div[data-testid="stHorizontalBlock"] > div:last-child [data-testid="stVerticalBlock"]::-webkit-scrollbar {
+            display: none;
+        }
+        
+        div[data-testid="stHorizontalBlock"] > div:first-child,
+        div[data-testid="stHorizontalBlock"] > div:last-child [data-testid="stVerticalBlock"] {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Ensure video container doesn't overflow */
+        div[data-testid="stHorizontalBlock"] > div:first-child iframe {
+            max-width: 100%;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # Create two columns: 60% for video, 40% for content
+    col1, col2 = st.columns([3, 2])  # 3:2 ratio = 60%:40%
     
     with col1:
         st.subheader("📺 Video")
-        # Display YouTube video
-        st.video(st.session_state.video_url)
+        # Get embed URL with timestamp
+        embed_url = get_embed_url(st.session_state.video_url)
+        video_url_with_time = f"{embed_url}?start={st.session_state.video_timestamp}&autoplay=1"
+        
+        # Display YouTube video with iframe for timestamp control
+        st.markdown(f"""
+            <div style="width: 100%;">
+                <iframe width="100%" height="500"
+                style="max-width: 100%;"
+                src="{video_url_with_time}"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write;
+                encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            </div>
+        """, unsafe_allow_html=True)
     
     with col2:
         # Tabs for different features
@@ -55,132 +118,3 @@ if st.session_state.started:
         
         with tab4:
             topics_ui.render(st.session_state.video_url, st.session_state.thread_id)
-
-if not st.session_state.started :
-    col1, col2 = st.columns([2, 1])
-
-    with col1:
-        st.markdown("""
-        ## 🎯 Why TubeTalk.ai?
-        
-        **Transform hours of YouTube lectures into structured learning experiences!**
-        
-        Most students learn from YouTube lectures that are 1+ hours long with no structured notes or navigation. 
-        TubeTalk.ai solves this by providing AI-powered learning tools that make video lectures interactive and efficient.
-        
-        ### 🚀 Core Features:
-        """)
-        
-        # Feature Cards
-        st.markdown("""
-        <div class="feature-card">
-            <h4>📝 SmartSummary</h4>
-            <p>Get comprehensive lecture summaries and notes automatically generated from any YouTube lecture. 
-            Perfect for quick review and study preparation.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="feature-card">
-            <h4>⏰ TimelineTopics</h4>
-            <p>Navigate directly to specific topics with precise timestamps. 
-            No more scrubbing through hour-long videos to find what you need!</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="feature-card">
-            <h4>💬 LectureChat</h4>
-            <p>Ask questions about the lecture content and get detailed answers with exact timestamp references. 
-            It's like having a teaching assistant available 24/7!</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="feature-card">
-            <h4>🧠 KnowledgeQuiz</h4>
-            <p>Test your understanding with automatically generated quizzes based on lecture content. 
-            Perfect for exam preparation and knowledge assessment.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="feature-card">
-            <h4>🎯 ConceptJump</h4>
-            <p>Find exactly when specific concepts are introduced in the lecture. 
-            Jump directly to "Machine Learning basics" or "Neural Networks" instantly!</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("### 🔧 Technology Stack")
-        st.info("""
-        **AI & ML:**
-        - 🤖 Google Gemini 2.5 Flash
-        - 🔗 LangChain/LangGraph
-        - 📊 Vector Databases
-        
-        **Backend:**
-        - 🐍 Python
-        - ⚡ Flask/FastAPI
-        - 🗄️ Database Storage
-        
-        **Features:**
-        - 📋 Structured Output
-        - 🎯 Precise Timestamps
-        - 🔍 Semantic Search
-        """)
-        
-        
-    # How It Works Section
-    st.markdown("---")
-    st.markdown("## 🔄 How TubeTalk.ai Works")
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.markdown("""
-        ### 1️⃣ Paste Link
-        Simply paste any YouTube lecture URL into TubeTalk.ai
-        """)
-
-    with col2:
-        st.markdown("""
-        ### 2️⃣ AI Analysis
-        Our AI processes the video transcript using advanced NLP
-        """)
-
-    with col3:
-        st.markdown("""
-        ### 3️⃣ Smart Features
-        Get summaries, timelines, chat, and quizzes instantly
-        """)
-
-    with col4:
-        st.markdown("""
-        ### 4️⃣ Learn Better
-        Navigate, understand, and test your knowledge efficiently
-        """)
-
-    # Footer
-    st.markdown("---")
-    st.markdown("### 🚀 Ready to Transform Your Learning?")
-    st.markdown("""
-    TubeTalk.ai makes YouTube lectures interactive, searchable, and much more effective for learning. 
-    **👈 Select a feature from the sidebar** to see the magic in action!
-
-    ### 💡 Perfect For:
-    - 📚 **Students** preparing for exams
-    - 🎓 **Researchers** reviewing conference talks  
-    - 💼 **Professionals** learning new skills
-    - 👨‍🏫 **Educators** creating course materials
-
-    ### 🌟 Why Choose TubeTalk.ai?
-    - ⚡ **Instant Processing** - Get results in seconds
-    - 🎯 **Precise Timestamps** - Jump to exact moments  
-    - 🧠 **AI-Powered** - Powered by Google Gemini 2.5 Flash
-    - 📱 **Easy to Use** - Simple, intuitive interface
-
-    ---
-    *Built with ❤️ using LangChain, Google Gemini AI, and modern web technologies*
-    """)
