@@ -1,6 +1,5 @@
 import streamlit as st
 from app.utils.api_client import generate_quiz
-from app.utils.utility_functions import get_embed_url
 
 def render(video_url, thread_id):
     st.header("📝 Quiz Section")
