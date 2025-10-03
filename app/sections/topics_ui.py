@@ -33,30 +33,26 @@ def render(video_url, thread_id):
             
             with col1:
                 st.markdown(f"🎯 **Main Topic {i}: {topic['topic']}**")
-                # optional: show summary if available
                 if "content" in topic:
                     st.caption(topic["content"])
 
             with col2:
-                if st.button("▶️ Play", key=f"play_main_{i}"):
-                    # ✅ same as quiz: directly update video_timestamp
+                if st.button("▶️ Play", key=f"play_main_{i}_{thread_id}"):
                     st.session_state.video_timestamp = int(float(topic.get("timestamp", 0)))
                     st.rerun()
 
-            # Expandable subtopics
-            with st.expander(f"🔽 Subtopics for: {topic['topic']}"):
-                for j, sub in enumerate(topic.get("subtopics", []), 1):
-                    sub_col1, sub_col2 = st.columns([4, 1])
+            # Subtopics
+            for j, sub in enumerate(topic.get("subtopics", []), 1):
+                sub_col1, sub_col2 = st.columns([4, 1])
 
-                    with sub_col1:
-                        st.markdown(f"   🔹 **Subtopic {i}.{j}:** {sub['subtopic']}")
-                        if "content" in sub:
-                            st.caption(sub["content"])
+                with sub_col1:
+                    st.markdown(f"   🔹 **Subtopic {i}.{j}:** {sub['subtopic']}")
+                    if "content" in sub:
+                        st.caption(sub["content"])
 
-                    with sub_col2:
-                        if st.button("▶️ Play", key=f"play_sub_{i}_{j}"):
-                            # ✅ same as quiz: update video_timestamp
-                            st.session_state.video_timestamp = int(float(sub.get("timestamp", 0)))
-                            st.rerun()
+                with sub_col2:
+                    if st.button("▶️ Play", key=f"play_sub_{i}_{j}_{thread_id}"):
+                        st.session_state.video_timestamp = int(float(sub.get("timestamp", 0)))
+                        st.rerun()
 
             st.markdown("---")

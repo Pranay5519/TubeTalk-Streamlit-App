@@ -72,12 +72,12 @@ def get_summary(thread_id: str, youtube_url: str):
     }
 
     # Headers (API key for authentication)
+    
     headers = {
         "gemini-api-key": GOOGLE_API_KEY
     }
-
     try:
-        response = requests.post(summary_url, params=params, headers=headers)
+        response = requests.post(summary_url, params=params,headers=headers)
         if response.status_code == 200:
             data = response.json()
             return data.get("main_summary")
@@ -88,13 +88,80 @@ def get_summary(thread_id: str, youtube_url: str):
         print(f"Error calling /summary/get_summary: {e}")
         return None
 
-if __name__ == "__main__":
-    youtube_url = "https://youtu.be/s3KnSb9b4Pk"
-    thread_id = "check1"
+def create_embeddings(thread_id: str, youtube_url: str):
+    """
+    Calls /chatbot/create_embeddings to generate embeddings from a YouTube transcript.
+    """
+    url = f"{API_BASE_URL}/chatbot/create_embeddings"
 
-    summary_text = get_summary(thread_id, youtube_url)
-    if summary_text:
-        print("\nSummary Response:")
-        print(summary_text)
-    else:
-        print("Failed to get summary.")
+    payload = {
+        "youtube_url": youtube_url,
+        "thread_id": thread_id
+    }
+    
+    try:
+        response = requests.post(url, json=payload)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+            return None
+    except requests.RequestException as e:
+        print("Error calling create_embeddings:", e)
+        return None
+    
+def chat_with_bot(thread_id: str, question: str):
+    """
+    Calls /chatbot/chat to ask questions about the video.
+    """
+    url = f"{API_BASE_URL}/chatbot/chat"
+
+    payload = {
+        "thread_id": thread_id,
+        "question": question
+    }
+    headers = {
+        "gemini-api-key": GOOGLE_API_KEY
+    }
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+            return None
+    except requests.RequestException as e:
+        print("Error calling chat:", e)
+        return None
+
+def get_chat_history(thread_id: str):
+    """
+    Fetch chat history for a given thread_id from the FastAPI /get_message_history endpoint.
+    """
+    history_url = "http://localhost:8000/chatbot/get_message_history"
+
+    # Query parameters
+    params = {
+        "thread_id": thread_id
+    }
+
+    # Headers (API key for authentication)
+    headers = {
+        "gemini-api-key": "AIzaSyCuSbrEpqerOdAo4JVlZ3n7rr14mPMwRFM",
+        "Content-Type": "application/json"
+    }
+
+    try:
+        # Make the POST request
+        response = requests.post(history_url, params=params, headers=headers)
+        
+        # Check HTTP status code
+        if response.status_code == 200:
+            return response.json()  # Return the chat history
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+            return []
+    except Exception as e:
+        print("Error calling /get_message_history:", e)
+        return []
+

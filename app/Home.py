@@ -90,7 +90,7 @@ if st.session_state.started:
         # Get embed URL with timestamp
         embed_url = get_embed_url(st.session_state.video_url)
         video_url_with_time = f"{embed_url}?start={st.session_state.video_timestamp}&autoplay=1"
-        
+        print(video_url_with_time)
         # Display YouTube video with iframe for timestamp control
         st.markdown(f"""
             <div style="width: 100%;">
