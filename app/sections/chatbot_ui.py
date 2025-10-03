@@ -22,6 +22,48 @@ def clean_history(message_history):
 def render(video_url, thread_id):
     st.header("🤖 Chatbot")
 
+    # Custom CSS to keep chat input fixed at bottom
+    st.markdown("""
+        <style>
+        .stChatInput {
+        position: fixed;
+        bottom: 0;
+        right: 1px;        /* distance from right edge */
+        width: 400px;       /* set your desired width */
+        background-color: white;
+        padding: 1rem;
+        z-index: 999;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+
+        .stChatInputContainer {
+            position: fixed;
+            bottom: 0;
+            left: 10;
+            right: 0;
+            background-color: white;
+            padding: 1rem;
+            z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        section[data-testid="stChatInput"] {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 1rem;
+            z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        /* Add padding to main content to prevent overlap */
+        .main .block-container {
+            padding-bottom: 100px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     # Initialize session state
     if "messages" not in st.session_state:
         st.session_state.messages = []  # stores {"role": "user"/"ai", "content": "message"}
@@ -78,31 +120,24 @@ def render(video_url, thread_id):
         # Save user msg
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
-            st.markdown(prompt)
-
+            st.text(prompt)
         # Call chatbot API
-        with st.chat_message("ai"):
-            with st.spinner("🤖 Thinking..."):
-                response = chat_with_bot(thread_id, prompt)
-                if response:
-                    bot_reply = response.get("answer", "⚠️ No response from bot")
+        with st.spinner("🤖 Thinking..."):
+            response = chat_with_bot(thread_id, prompt)
+            if response:
+                bot_reply = response.get("answer", "⚠️ No response from bot")
 
-                    # Also update message history from response
-                    if "message_history" in response:
-                        st.session_state.messages = []
-                        cleaned_history = clean_history(response["message_history"])
-                        for msg in cleaned_history:
-                            role = "user" if msg["type"] == "human" else "ai"
-                            st.session_state.messages.append(
-                                {"role": role, "content": msg["content"]}
-                            )
-                else:
-                    bot_reply = "❌ Error: Could not connect to chatbot API."
-
-                st.markdown(bot_reply)
-
-    # Reset chat option
-    if st.button("🔄 Reset Chat"):
-        st.session_state.messages = []
-        st.session_state.history_loaded = False
+                # Also update message history from response
+                if "message_history" in response:
+                    st.session_state.messages = []
+                    cleaned_history = clean_history(response["message_history"])
+                    for msg in cleaned_history:
+                        role = "user" if msg["type"] == "human" else "ai"
+                        st.session_state.messages.append(
+                            {"role": role, "content": msg["content"]}
+                        )
+            else:
+                bot_reply = "❌ Error: Could not connect to chatbot API."
+                st.session_state.messages.append({"role": "ai", "content": bot_reply})
+        
         st.rerun()
