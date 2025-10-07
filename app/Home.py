@@ -1,7 +1,7 @@
 import streamlit as st
 from app.sections import chatbot_ui, quiz_ui, summary_ui, topics_ui
 from app.utils.utility_functions import get_embed_url
-
+from app.utils.api_client import get_thread_ids , get_url_by_thread_id
 # Page config
 st.set_page_config(page_title="TubeTalk AI", layout="wide")
 
@@ -14,7 +14,11 @@ if "thread_id" not in st.session_state:
     st.session_state.thread_id = ""
 if "video_timestamp" not in st.session_state:
     st.session_state.video_timestamp = 0
-
+if "embeddings_created" not in st.session_state:
+        st.session_state.embeddings_created = False
+if "history_loaded" not in st.session_state:
+    st.session_state.history_loaded = False
+    
 st.sidebar.title("TubeTalk AI Settings")
 
 # Sidebar inputs
@@ -23,7 +27,22 @@ with st.sidebar.form("start_form"):
     thread_id = st.text_input("Enter Thread ID:", st.session_state.thread_id)
     submitted = st.form_submit_button("Start")
 
+thread_ids = get_thread_ids()
+for thread_id in thread_ids:
+     if st.sidebar.button(str(thread_id)):
+         st.session_state.thread_id = thread_id
+         st.session_state.video_url = get_embed_url(get_url_by_thread_id(thread_id)['url'])
+         st.session_state.started= True
+         st.session_state.history_loaded = False
+         st.session_state.embeddings_created = False
+         st.rerun()
 if submitted:
+    st.rerun()
+    st.session_state.thread_id = thread_id
+    st.session_state.video_url = get_embed_url(get_url_by_thread_id(thread_id)['url'])
+    st.session_state.started= False
+    st.session_state.history_loaded = False
+    st.session_state.embeddings_created = False
     if video_url.strip() != "" and thread_id.strip() != "":
         st.session_state.started = True
         st.session_state.video_url = video_url
@@ -118,3 +137,5 @@ if st.session_state.started:
         
         with tab4:
             topics_ui.render(st.session_state.video_url, st.session_state.thread_id)
+            
+        

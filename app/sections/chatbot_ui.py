@@ -81,13 +81,17 @@ def render(video_url, thread_id):
             embeddings = create_embeddings(thread_id, video_url)
             if embeddings:
                 st.session_state.embeddings_created = True
-                st.success("✅ Embeddings created successfully!")
+                if embeddings['type'] == "created":
+                    st.success("✅ Embeddings created successfully!")
+                else:
+                    st.success("✅ Embeddings loaded successfully!")
             else:
                 st.error("❌ Failed to create embeddings. Please try again.")
 
     # Step 2: Load history from DB (only once)
     if not st.session_state.history_loaded:
         with st.spinner("📂 Loading chat history from DB..."):
+            print(thread_id)
             messages = get_chat_history(thread_id)
             # Clean unwanted system/debug messages
             cleaned_history = clean_history(messages)

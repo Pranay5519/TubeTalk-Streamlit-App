@@ -138,7 +138,7 @@ def get_chat_history(thread_id: str):
     """
     Fetch chat history for a given thread_id from the FastAPI /get_message_history endpoint.
     """
-    history_url = "http://localhost:8000/chatbot/get_message_history"
+    history_url = f"{API_BASE_URL}/chatbot/get_message_history"
 
     # Query parameters
     params = {
@@ -165,3 +165,46 @@ def get_chat_history(thread_id: str):
         print("Error calling /get_message_history:", e)
         return []
 
+
+def get_thread_ids():
+    """
+    Calls /thread_ids/all_conversations to fetch all saved thread IDs from the database.
+    """
+    url = f"{API_BASE_URL}/thread_ids/all_conversations"
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            print("✅ All thread_ids Retrieved Successfully!")
+            return data["conversations"]
+        else:
+            print(f"❌ Error {response.status_code}: {response.text}")
+            return None
+    except requests.RequestException as e:
+        print("Error calling /thread_ids/all_conversations:", e)
+        return None
+    
+
+def get_url_by_thread_id(thread_id: str):
+    """
+    Calls /url/{thread_id} to fetch the YouTube URL linked with a specific thread_id.
+    """
+    url = f"{API_BASE_URL}/url/{thread_id}"
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            print(f"✅ URL Retrieved for Thread ID '{thread_id}'")
+            return data
+        elif response.status_code == 404:
+            print(f"⚠️ No URL found for Thread ID '{thread_id}'")
+            return None
+        else:
+            print(f"❌ Error {response.status_code}: {response.text}")
+            return None
+    except requests.RequestException as e:
+        print("Error calling /url/{thread_id}:", e)
+        return None
+    
