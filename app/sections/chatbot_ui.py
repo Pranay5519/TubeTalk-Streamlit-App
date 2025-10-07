@@ -91,7 +91,7 @@ def render(video_url, thread_id):
     # Step 2: Load history from DB (only once)
     if not st.session_state.history_loaded:
         with st.spinner("📂 Loading chat history from DB..."):
-            print(thread_id)
+            print("loading chat using: ",thread_id)
             messages = get_chat_history(thread_id)
             # Clean unwanted system/debug messages
             cleaned_history = clean_history(messages)
