@@ -1,7 +1,7 @@
 import streamlit as st
 from app.utils.api_client import get_topics
 
-def render(video_url, thread_id):
+def render(video_url, thread_id,api_key_input):
     st.header("📌 Key Topics Section")
 
     if "topics_generated" not in st.session_state:
@@ -14,7 +14,7 @@ def render(video_url, thread_id):
     # 👇 This is the missing button
     if not st.session_state.topics_generated:
         if st.button("Generate Topics"):
-            topics_response = get_topics(thread_id=thread_id, youtube_url=video_url)
+            topics_response = get_topics(thread_id=thread_id, youtube_url=video_url,api_key=api_key_input)
             if topics_response:
                 print("topics Generated")
                 #print("Topics : " , topics_response)

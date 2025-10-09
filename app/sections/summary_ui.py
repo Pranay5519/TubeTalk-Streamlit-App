@@ -1,7 +1,7 @@
 import streamlit as st
 from app.utils.api_client import get_summary  # Make sure this imports your API function
 
-def render(video_url, thread_id):
+def render(video_url, thread_id,api_key_input):
     st.header("📄 Summary Section")
 
     # Session state flags
@@ -16,7 +16,7 @@ def render(video_url, thread_id):
     # Button to generate summary
     if not st.session_state.summary_generated:
         if st.button("Generate Summary"):
-            summary_response = get_summary(thread_id=thread_id, youtube_url=video_url)
+            summary_response = get_summary(thread_id=thread_id, youtube_url=video_url,api_key=api_key_input)
             if summary_response:
                 st.session_state.summary_data = summary_response
                 st.session_state.summary_generated = True

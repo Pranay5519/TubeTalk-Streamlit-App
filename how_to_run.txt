@@ -1,3 +1,5 @@
+venv/Scripts/Activate
+
 $env:PYTHONPATH="C:\Users\prana\Desktop\PROJECTS\tubetalk.ai_api"
 
 streamlit run app/Home.py

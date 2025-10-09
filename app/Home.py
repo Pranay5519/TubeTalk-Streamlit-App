@@ -15,37 +15,48 @@ if "thread_id" not in st.session_state:
 if "video_timestamp" not in st.session_state:
     st.session_state.video_timestamp = 0
 if "embeddings_created" not in st.session_state:
-        st.session_state.embeddings_created = False
+    st.session_state.embeddings_created = False
 if "history_loaded" not in st.session_state:
     st.session_state.history_loaded = False
 if "messages" not in st.session_state:
-        st.session_state.messages = []
+    st.session_state.messages = []
+if "api_key" not in st.session_state:
+    st.session_state.api_key = ""    
 st.sidebar.title("TubeTalk AI Settings")
 
+st.sidebar.title("TubeTalk AI Settings")
+
+# --- SIDEBAR INPUT FORM ---
 with st.sidebar.form("start_form"):
     video_url = st.text_input("Enter Video URL:", st.session_state.video_url)
     thread_id_input = st.text_input("Enter Thread ID:", st.session_state.thread_id)
+    #api_key_input = st.text_input("Enter Google Gen API Key", st.session_state.api_key , type = "password")
     submitted = st.form_submit_button("Start")
-    #st.session_state.history_loaded = False
-# --- EXISTING THREAD IDS SECTION ---
-thread_ids = get_thread_ids()
-thread_ids = [tid for tid in thread_ids if tid.strip() != ""]
-print("thread Ids:", thread_ids)
 
-# Container for thread buttons
+# --- EXISTING THREAD IDS SECTION ---
+thread_ids = [tid for tid in get_thread_ids() if tid.strip() != ""]
+print("Thread IDs:", thread_ids)
+
+st.sidebar.markdown("### 🔑 Google API Key ")
+api_key_input = st.sidebar.text_input(
+    "Enter your Google API Key", 
+    type="password", 
+    key="google_api_key_history"
+)
+
 st.sidebar.markdown("### 💾 Saved Thread IDs")
 
-clicked_thread = None  # temporary variable
-
+clicked_thread = None  # Temporary variable to store which thread button was clicked
 for tid in thread_ids:
     if st.sidebar.button(str(tid)):
-        clicked_thread = tid  # only change if a button is clicked
+        clicked_thread = tid
 
-# Handle Start button click
+# --- HANDLE START FORM SUBMISSION ---
 if submitted:
-    if video_url.strip() != "" and thread_id_input.strip() != "":
+    if video_url.strip() and thread_id_input.strip():
         st.session_state.thread_id = thread_id_input
         st.session_state.video_url = get_embed_url(video_url)
+        st.session_state.api_key = api_key_input  # ✅ store API key in session
         st.session_state.started = True
         st.session_state.history_loaded = False
         st.session_state.embeddings_created = False
@@ -54,16 +65,18 @@ if submitted:
         st.session_state.summary_data = None
         st.session_state.topics_data = None
     else:
-        st.warning("Please fill in both fields!")
+        st.warning("⚠️ Please fill in both fields!")
 
-# Handle thread button click (AFTER form logic)
+# --- HANDLE EXISTING THREAD BUTTON CLICK ---
 if clicked_thread:
     st.session_state.thread_id = clicked_thread
     st.session_state.video_url = get_embed_url(get_url_by_thread_id(clicked_thread)['url'])
+    st.session_state.api_key = api_key_input  or st.session_state.api_key  # ✅ use input if provided, else keep old key
     st.session_state.started = True
     st.session_state.history_loaded = False
     st.session_state.embeddings_created = False
     st.session_state.messages = []
+
 # Main page
 st.title("TubeTalk AI")
 
@@ -143,21 +156,22 @@ if st.session_state.started:
             st.session_state.embeddings_created = False
             st.session_state.history_loaded = False
             st.session_state.messages = []
+            #st.session_state.api_key = ""
             st.rerun()
     with col2:
         # Tabs for different features
         tab1, tab2, tab3, tab4 = st.tabs(["📝 Quiz", "🤖 Chatbot", "📄 Summary", "📌 Topics"])
         
         with tab1:
-            quiz_ui.render(st.session_state.video_url, st.session_state.thread_id)
+            quiz_ui.render(st.session_state.video_url, st.session_state.thread_id,st.session_state.api_key)
         
         with tab2:
-            chatbot_ui.render(st.session_state.video_url, st.session_state.thread_id)
+            chatbot_ui.render(st.session_state.video_url, st.session_state.thread_id,st.session_state.api_key)
         
         with tab3:
-            summary_ui.render(st.session_state.video_url, st.session_state.thread_id)
+            summary_ui.render(st.session_state.video_url, st.session_state.thread_id,st.session_state.api_key)
         
         with tab4:
-            topics_ui.render(st.session_state.video_url, st.session_state.thread_id)
+            topics_ui.render(st.session_state.video_url, st.session_state.thread_id,st.session_state.api_key)
             
         

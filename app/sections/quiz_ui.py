@@ -1,7 +1,7 @@
 import streamlit as st
 from app.utils.api_client import generate_quiz
 
-def render(video_url, thread_id):
+def render(video_url, thread_id,api_key_input):
     st.header("📝 Quiz Section")
     
     if "quiz_generated" not in st.session_state:
@@ -13,7 +13,7 @@ def render(video_url, thread_id):
         
     if not st.session_state.quiz_generated:
         if st.button("Generate Quiz"):
-            quiz_response = generate_quiz(thread_id=thread_id, youtube_url=video_url)
+            quiz_response = generate_quiz(thread_id=thread_id, youtube_url=video_url,api_key = api_key_input)
             if quiz_response:
                 print("Quiz Generated Successfully")
                 print(quiz_response)

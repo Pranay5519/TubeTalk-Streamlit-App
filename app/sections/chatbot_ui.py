@@ -19,7 +19,7 @@ def clean_history(message_history):
     return cleaned
 
 
-def render(video_url, thread_id):
+def render(video_url, thread_id,api_key_input):
     st.header("🤖 Chatbot")
 
     # Custom CSS to keep chat input fixed at bottom
@@ -92,7 +92,7 @@ def render(video_url, thread_id):
     if not st.session_state.history_loaded:
         with st.spinner("📂 Loading chat history from DB..."):
             print("loading chat using: ",thread_id)
-            messages = get_chat_history(thread_id)
+            messages = get_chat_history(thread_id=thread_id,api_key=api_key_input)
             # Clean unwanted system/debug messages
             cleaned_history = clean_history(messages)
             for msg in cleaned_history:
@@ -127,7 +127,7 @@ def render(video_url, thread_id):
             st.text(prompt)
         # Call chatbot API
         with st.spinner("🤖 Thinking..."):
-            response = chat_with_bot(thread_id, prompt)
+            response = chat_with_bot(thread_id=thread_id, question=prompt,api_key=api_key_input)
             if response:
                 bot_reply = response.get("answer", "⚠️ No response from bot")
 
