@@ -20,49 +20,13 @@ def clean_history(message_history):
 
 
 def render(video_url, thread_id,api_key_input):
-    st.header("🤖 Chatbot")
-
+    #st.header("🤖 Chatbot")
+    st.markdown('<h1 class="custom-header">🤖 chatbot</h1>', unsafe_allow_html=True)
     # Custom CSS to keep chat input fixed at bottom
-    st.markdown("""
-        <style>
-        .stChatInput {
-        position: fixed;
-        bottom: 0;
-        right: 1px;        /* distance from right edge */
-        width: 400px;       /* set your desired width */
-        background-color: white;
-        padding: 1rem;
-        z-index: 999;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        border-radius: 8px;
-    }
-
-        .stChatInputContainer {
-            position: fixed;
-            bottom: 0;
-            left: 10;
-            right: 0;
-            background-color: white;
-            padding: 1rem;
-            z-index: 999;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        section[data-testid="stChatInput"] {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            padding: 1rem;
-            z-index: 999;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        /* Add padding to main content to prevent overlap */
-        .main .block-container {
-            padding-bottom: 100px;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    def load_css(file_name):
+        with open(file_name) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    load_css("app/styles/chatbot.css")
 
     # Initialize session state
     if "messages" not in st.session_state:

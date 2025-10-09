@@ -2,9 +2,12 @@ import streamlit as st
 from app.utils.api_client import get_summary  # Make sure this imports your API function
 
 def render(video_url, thread_id,api_key_input):
-    st.header("📄 Summary Section")
-
-    # Session state flags
+    st.markdown('<h1 class="custom-header">📄 Summary</h1>', unsafe_allow_html=True)
+    def load_css(file_name):
+        with open(file_name) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    load_css("app/styles/summary.css")
+    # Session state flags 
     if "summary_generated" not in st.session_state:
         st.session_state.summary_generated = False
     if "summary_data" not in st.session_state:

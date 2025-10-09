@@ -1,0 +1,144 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600&display=swap');
+
+/* Global font setup */
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background gradient */
+.main {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    background-attachment: fixed;
+}
+
+/* Page container */
+.block-container {
+    background: rgba(240, 249, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem !important;
+    box-shadow: 0 20px 60px rgba(56, 189, 248, 0.25);
+    margin-top: 2rem;
+}
+.custom-header {
+    color: #2E8B57;           /* nice green color */
+    font-size: 14px;          /* smaller font size */
+    text-align: center;       /* center the text */
+    font-weight: 600;         /* semi-bold */
+    margin-bottom: 16px;      /* a bit less spacing */
+    text-shadow: 0.5px 0.5px 2px rgba(0,0,0,0.1); /* soft shadow */
+}
+/* Header */
+h2 {
+    color: #0369a1;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Main Topic Card */
+.main-topic {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left: 6px solid #0284c7;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 6px 12px rgba(14, 165, 233, 0.15);
+    transition: all 0.3s ease;
+}
+
+.main-topic:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.25);
+}
+
+/* Main topic title */
+.main-topic-title {
+    color: #0c4a6e;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Main topic content */
+.main-topic-content {
+    font-size: 0.95rem;
+    color: #1e293b;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+}
+
+/* Subtopic Box */
+.subtopic {
+    background: #f8fafc;
+    border-left: 4px solid #7dd3fc;
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    margin: 0.6rem 0 0.6rem 1rem;
+    box-shadow: 0 2px 6px rgba(14, 165, 233, 0.1);
+    transition: all 0.3s ease;
+}
+
+.subtopic:hover {
+    background: #e0f2fe;
+    transform: translateY(-2px);
+}
+
+/* Subtopic title */
+.subtopic-title {
+    color: #0369a1;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+/* Subtopic content */
+.subtopic-content {
+    color: #334155;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Play buttons */
+.stButton>button {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+    transition: all 0.3s ease;
+}
+
+.stButton>button:hover {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    transform: translateY(-2px);
+}
+
+/* Divider */
+hr, .stMarkdown>div>hr, .stMarkdown>hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+    margin: 1.5rem 0;
+}
+
+/* Sidebar styling */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+section[data-testid="stSidebar"] label {
+    color: #0369a1;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}

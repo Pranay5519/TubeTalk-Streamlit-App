@@ -1,0 +1,286 @@
+/* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap');
+    
+    /* Global Styles */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    h1, h2, h3, h4 {
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .main {
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        background-attachment: fixed;
+    }
+    
+    .block-container {
+        background: rgba(240, 249, 255, 0.95);
+        border-radius: 20px;
+        padding: 2rem !important;
+        box-shadow: 0 20px 60px rgba(56, 189, 248, 0.2);
+        margin-top: 2rem;
+    }
+    
+    /* Sidebar Styling */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+    }
+    
+    section[data-testid="stSidebar"] .block-container {
+        background: transparent;
+        box-shadow: none;
+    }
+    
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 {
+        color: #0c4a6e;
+        text-shadow: 0 2px 4px rgba(56, 189, 248, 0.2);
+    }
+    
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] label {
+        color: #0369a1;
+    }
+    
+    /* Title Styling */
+    h1 {
+        background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 3.5rem !important;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(56, 189, 248, 0.2);
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        border-left: 4px solid #0ea5e9;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(56, 189, 248, 0.15);
+    }
+    
+    .feature-card:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 16px rgba(14, 165, 233, 0.3);
+        background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%);
+    }
+    
+    .feature-card h4 {
+        color: #0284c7;
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .feature-card p {
+        color: #0c4a6e;
+        line-height: 1.6;
+        margin: 0;
+    }
+    
+    /* Buttons */
+    .stButton>button {
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+        width: 100%;
+    }
+    
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6);
+    }
+    
+    /* Sidebar Buttons */
+    section[data-testid="stSidebar"] .stButton>button {
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        margin: 0.3rem 0;
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+    
+    section[data-testid="stSidebar"] .stButton>button:hover {
+        background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+    }
+    
+    /* Input Fields */
+    .stTextInput>div>div>input {
+        border-radius: 10px;
+        border: 2px solid #bae6fd;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+        background: #f0f9ff;
+    }
+    
+    .stTextInput>div>div>input:focus {
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+        border-radius: 10px;
+        padding: 0.5rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #0369a1;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        color: white;
+    }
+    
+    /* Info Boxes */
+    .stInfo {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left: 4px solid #0ea5e9;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    
+    /* Warning Boxes */
+    .stWarning {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-left: 4px solid #f59e0b;
+        border-radius: 10px;
+    }
+    
+    /* Section Headers */
+    h2 {
+        color: #0c4a6e;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+    
+    h2:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #0ea5e9 0%, #0284c7 100%);
+        border-radius: 2px;
+    }
+    
+    h3 {
+        color: #0369a1;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+    }
+    
+    /* Video Container */
+    iframe {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* How It Works Section */
+    .stColumns > div {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 0.5rem;
+        box-shadow: 0 4px 6px rgba(14, 165, 233, 0.15);
+        transition: all 0.3s ease;
+        border: 1px solid #bae6fd;
+    }
+    
+    .stColumns > div:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(14, 165, 233, 0.3);
+        background: linear-gradient(135deg, #dbeafe 0%, #bae6fd 100%);
+    }
+    
+    /* Markdown Styling */
+    .stMarkdown {
+        color: #0c4a6e;
+    }
+    
+    /* Horizontal Rule */
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+        margin: 2rem 0;
+    }
+    
+    /* Sticky column styling */
+    div[data-testid="stHorizontalBlock"] > div:last-child {
+        position: sticky;
+        top: 80px;
+        height: fit-content;
+        z-index: 10;
+    }
+    
+    div[data-testid="stHorizontalBlock"] > div:first-child {
+        overflow-y: auto;
+    }
+    
+    div[data-testid="stHorizontalBlock"] > div:last-child [data-testid="stVerticalBlock"] {
+        max-height: calc(100vh - 150px);
+        overflow-y: auto;
+    }
+    
+    /* Hide scrollbars */
+    div[data-testid="stHorizontalBlock"] > div:first-child::-webkit-scrollbar,
+    div[data-testid="stHorizontalBlock"] > div:last-child [data-testid="stVerticalBlock"]::-webkit-scrollbar {
+        display: none;
+    }
+    
+    div[data-testid="stHorizontalBlock"] > div:first-child,
+    div[data-testid="stHorizontalBlock"] > div:last-child [data-testid="stVerticalBlock"] {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    div[data-testid="stHorizontalBlock"] > div:first-child iframe {
+        max-width: 100%;
+    }
+    
+    /* Animated gradient background for main title */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Badge styling */
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin: 0.25rem;
+    }

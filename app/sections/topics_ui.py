@@ -2,8 +2,12 @@ import streamlit as st
 from app.utils.api_client import get_topics
 
 def render(video_url, thread_id,api_key_input):
-    st.header("📌 Key Topics Section")
+    st.markdown('<h1 class="custom-header">Topics</h1>', unsafe_allow_html=True)
 
+    def load_css(file_name):
+        with open(file_name) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    load_css("app/styles/topic.css")
     if "topics_generated" not in st.session_state:
         st.session_state.topics_generated = False
     if "topics_data" not in st.session_state:
@@ -32,7 +36,7 @@ def render(video_url, thread_id,api_key_input):
             col1, col2 = st.columns([4, 1])
             
             with col1:
-                st.markdown(f"🎯 **Main Topic {i}: {topic['topic']}**")
+                st.markdown(f"🎯 **{i}: {topic['topic']}**")
                 if "content" in topic:
                     st.caption(topic["content"])
 
@@ -46,7 +50,7 @@ def render(video_url, thread_id,api_key_input):
                 sub_col1, sub_col2 = st.columns([4, 1])
 
                 with sub_col1:
-                    st.markdown(f"   🔹 **Subtopic {i}.{j}:** {sub['subtopic']}")
+                    st.markdown(f"   🔹 **{i}.{j}:** {sub['subtopic']}")
                     if "content" in sub:
                         st.caption(sub["content"])
 
