@@ -1,8 +1,12 @@
 tubetalk.ai_api/
+    .env
     .gitignore
     folder_structure.txt
     get_folder_structure.py
+    how_to_run.txt
+    README.md
     test.py
+    test_notebook.ipynb
     __init__.py
     app/
         Home.py
@@ -12,7 +16,13 @@ tubetalk.ai_api/
             quiz_ui.py
             summary_ui.py
             topics_ui.py
+        styles/
+            chatbot.css
+            home.css
+            quiz.css
+            summary.css
+            topic.css
         utils/
             api_client.py
             config.py
-            sessioin_manager.py
+            utility_functions.py

@@ -26,7 +26,7 @@ TubeTalk.ai Streamlit UI is a beautiful, user-friendly frontend application buil
 - 🎯 **Quiz Generation** - Create custom quizzes from any content
 - 🏷️ **Topic Extraction** - Automatically identify key topics and concepts
 
-Built with Streamlit for rapid prototyping and seamless user experience.
+Built with Streamlit for rapid prototyping and seamless user experience, featuring custom CSS styling for an enhanced visual experience.
 
 ---
 
@@ -37,7 +37,10 @@ tubetalk.ai_api/
 ├── .gitignore                  # Git ignore configuration
 ├── folder_structure.txt        # Project structure documentation
 ├── get_folder_structure.py     # Script to generate folder structure
+├── how_to_run.txt             # Quick start guide
+├── README.md                   # This file
 ├── test.py                     # Testing utilities
+├── test_notebook.ipynb         # Jupyter notebook for testing
 ├── __init__.py
 │
 └── app/                        # Main Streamlit application
@@ -50,10 +53,17 @@ tubetalk.ai_api/
     │   ├── summary_ui.py       # Summary generation interface
     │   └── topics_ui.py        # Topic extraction interface
     │
+    ├── styles/                 # Custom CSS styling
+    │   ├── chatbot.css         # Chatbot page styles
+    │   ├── home.css            # Home page styles
+    │   ├── quiz.css            # Quiz page styles
+    │   ├── summary.css         # Summary page styles
+    │   └── topic.css           # Topic page styles
+    │
     └── utils/                  # Utility modules
         ├── api_client.py       # API communication layer
         ├── config.py           # Configuration management
-        └── sessioin_manager.py # Session state management
+        └── utility_functions.py # Helper functions
 ```
 
 ---
@@ -91,14 +101,25 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Configure API Endpoint
+### 4. Configure Environment Variables
 
-Update the API endpoint in `app/utils/config.py`:
-```python
-API_BASE_URL = "http://localhost:8000"  # Your FastAPI backend URL
+Create a `.env` file in the root directory:
+```env
+# API Configuration
+API_BASE_URL=http://localhost:8000
+API_TIMEOUT=30
+
+# Application Settings
+DEBUG_MODE=False
+ENABLE_CACHING=True
+
+# Optional: API Keys
+OPENAI_API_KEY=your_api_key_here
 ```
 
-### 5. Run the Application
+### 5. Quick Start
+
+For detailed instructions, see `how_to_run.txt`:
 ```bash
 streamlit run app/Home.py
 ```
@@ -107,6 +128,7 @@ streamlit run app/Home.py
 
 The app will automatically open in your browser at:
 - **Local URL:** [http://localhost:8501](http://localhost:8501)
+- **Network URL:** Your network IP on port 8501
 
 ---
 
@@ -114,7 +136,7 @@ The app will automatically open in your browser at:
 
 ### 🏠 Home Page
 
-The landing page provides navigation to all features and an overview of the application.
+The landing page provides navigation to all features and an overview of the application with custom styling for a modern look.
 
 ### 💬 Chatbot Interface
 
@@ -128,6 +150,7 @@ The landing page provides navigation to all features and an overview of the appl
 - Context retention across messages
 - Real-time streaming responses
 - Chat history management
+- Custom CSS styling for chat bubbles
 
 ### 📝 Summary Generator
 
@@ -159,6 +182,7 @@ The landing page provides navigation to all features and an overview of the appl
 - Adjustable difficulty levels
 - Answer key generation
 - Quiz history tracking
+- Interactive UI with custom styling
 
 ### 🏷️ Topic Extractor
 
@@ -176,51 +200,50 @@ The landing page provides navigation to all features and an overview of the appl
 
 ---
 
-## 🔧 Configuration
+### Utility Functions (`app/utils/utility_functions.py`)
 
-### API Client (`app/utils/api_client.py`)
-
-Handles all communication with the FastAPI backend:
+Common helper functions:
 ```python
-class APIClient:
-    """
-    Manages HTTP requests to TubeTalk.ai API
-    - GET/POST/DELETE methods
-    - Error handling
-    - Response parsing
-    """
+# String formatting
+# Date/time utilities
+# File handling
+# Data validation
+# Session helpers
 ```
 
-### Session Manager (`app/utils/sessioin_manager.py`)
+---
 
-Manages Streamlit session state:
+## 🎨 Styling
+
+### Custom CSS
+
+Each section has dedicated CSS files in `app/styles/`:
+
+- **`home.css`** - Landing page styling, hero sections, cards
+- **`chatbot.css`** - Chat bubbles, message containers, input styling
+- **`summary.css`** - Summary cards, content display, buttons
+- **`quiz.css`** - Question cards, answer options, results display
+- **`topic.css`** - Topic tags, keyword clouds, visualization
+
+### Loading Custom Styles
 ```python
-class SessionManager:
-    """
-    Handles session state management
-    - User sessions
-    - Chat history
-    - Thread IDs
-    - Cache management
-    """
+def load_css(file_name):
+    """Load CSS file into Streamlit app"""
+    with open(f"app/styles/{file_name}") as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 ```
 
-### Config (`app/utils/config.py`)
+### Customizing Themes
 
-Central configuration file:
-```python
-# API Configuration
-API_BASE_URL = "http://localhost:8000"
-API_TIMEOUT = 30
-
-# UI Configuration
-PAGE_TITLE = "TubeTalk.ai"
-PAGE_ICON = "🚀"
-LAYOUT = "wide"
-
-# Feature Flags
-ENABLE_CACHING = True
-DEBUG_MODE = False
+Modify CSS files to match your brand:
+```css
+/* app/styles/home.css */
+:root {
+    --primary-color: #FF4B4B;
+    --secondary-color: #0068C9;
+    --background-color: #FFFFFF;
+    --text-color: #262730;
+}
 ```
 
 ---
@@ -229,6 +252,7 @@ DEBUG_MODE = False
 
 ### 🖥️ User Interface
 
+- **Custom Styling** - Polished UI with dedicated CSS for each section
 - **Responsive Design** - Works seamlessly on desktop and mobile
 - **Dark/Light Mode** - Theme customization
 - **Intuitive Navigation** - Easy access to all features
@@ -240,6 +264,7 @@ DEBUG_MODE = False
 - **Error Handling** - Graceful error management and user feedback
 - **Request Caching** - Optimized performance with smart caching
 - **Session Management** - Persistent user sessions
+- **Retry Logic** - Automatic retry on failed requests
 
 ### 📊 Advanced Functionality
 
@@ -247,6 +272,7 @@ DEBUG_MODE = False
 - **History Tracking** - Access previous queries and results
 - **Batch Processing** - Handle multiple requests efficiently
 - **Customization** - Adjustable parameters for all features
+- **Analytics** - Track usage and performance metrics
 
 ---
 
@@ -254,7 +280,11 @@ DEBUG_MODE = False
 
 ### Running Tests
 ```bash
+# Run unit tests
 python test.py
+
+# Run interactive notebook
+jupyter notebook test_notebook.ipynb
 ```
 
 ### Generate Folder Structure
@@ -264,13 +294,27 @@ python get_folder_structure.py
 
 This will update `folder_structure.txt` with the current project structure.
 
+### Development Mode
+
+Enable debug mode in `.env`:
+```env
+DEBUG_MODE=True
+```
+
+This enables:
+- Detailed error messages
+- API request logging
+- Performance metrics
+- Hot reloading
+
 ### Adding New Features
 
 1. Create a new UI module in `app/sections/`
-2. Add API endpoints in the backend
-3. Update `api_client.py` with new API methods
-4. Add navigation in `Home.py`
-5. Update documentation
+2. Create corresponding CSS file in `app/styles/`
+3. Add API endpoints in the backend
+4. Update `api_client.py` with new API methods
+5. Add navigation in `Home.py`
+6. Update documentation
 
 ---
 
@@ -281,6 +325,7 @@ requests>=2.31.0
 python-dotenv>=1.0.0
 pandas>=2.0.0
 plotly>=5.17.0
+streamlit-extras>=0.3.0
 ```
 
 Install all dependencies:
@@ -294,27 +339,44 @@ pip install -r requirements.txt
 
 ### Connection Issues
 
-**Problem:** Cannot connect to API
+**Problem:** Cannot connect to API  
 **Solution:** 
 - Ensure FastAPI backend is running
-- Check `API_BASE_URL` in `config.py`
+- Check `API_BASE_URL` in `.env`
 - Verify no firewall blocking the connection
+- Check backend logs for errors
 
-### Session State Issues
+### CSS Not Loading
 
-**Problem:** Session data not persisting
+**Problem:** Custom styles not applied  
 **Solution:**
-- Clear browser cache
+- Verify CSS files exist in `app/styles/`
+- Check file paths in UI modules
+- Clear browser cache (`Ctrl + F5`)
 - Restart Streamlit app
-- Check `sessioin_manager.py` configuration
+
+### Environment Variable Issues
+
+**Problem:** Config values not loading  
+**Solution:**
+```bash
+# Verify .env file exists
+ls -la .env
+
+# Check environment variables
+python -c "from app.utils.config import Config; print(Config.API_BASE_URL)"
+```
 
 ### Import Errors
 
-**Problem:** Module import failures
+**Problem:** Module import failures  
 **Solution:**
 ```bash
 # Reinstall dependencies
 pip install -r requirements.txt --force-reinstall
+
+# Verify Python path
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 ```
 
 ---
@@ -326,9 +388,12 @@ pip install -r requirements.txt --force-reinstall
 1. Push your code to GitHub
 2. Visit [share.streamlit.io](https://share.streamlit.io)
 3. Connect your repository
-4. Set environment variables:
-   - `API_BASE_URL`
-   - Any API keys or secrets
+4. Configure secrets (Settings → Secrets):
+```toml
+   [secrets]
+   API_BASE_URL = "https://your-api-url.com"
+   API_TIMEOUT = "30"
+```
 5. Deploy!
 
 ### Deploy with Docker
@@ -338,19 +403,43 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ ./app/
+COPY . .
 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "app/Home.py", "--server.port=8501", "--server.address=0.0.0.0"]
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+
+ENTRYPOINT ["streamlit", "run", "app/Home.py", "--server.port=8501", "--server.address=0.0.0.0"]
 ```
 
 Build and run:
 ```bash
 docker build -t tubetalk-streamlit .
-docker run -p 8501:8501 tubetalk-streamlit
+docker run -p 8501:8501 --env-file .env tubetalk-streamlit
+```
+
+### Deploy with Docker Compose
+```yaml
+version: '3.8'
+
+services:
+  streamlit:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://fastapi:8000
+    depends_on:
+      - fastapi
+    volumes:
+      - ./app:/app/app
+```
+
+Run:
+```bash
+docker-compose up -d
 ```
 
 ---
@@ -360,27 +449,10 @@ docker run -p 8501:8501 tubetalk-streamlit
 - [Streamlit Documentation](https://docs.streamlit.io)
 - [TubeTalk.ai API Documentation](https://github.com/<your-username>/tubetalk-ai-api)
 - [Python Requests Library](https://requests.readthedocs.io)
+- [CSS Styling Guide](https://docs.streamlit.io/library/api-reference/utilities/st.markdown)
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Contribution Guidelines
-
-- Follow PEP 8 style guide
-- Add docstrings to all functions
-- Update documentation for new features
-- Test thoroughly before submitting PR
-
----
 
 ## 📝 License
 
@@ -393,6 +465,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with [Streamlit](https://streamlit.io/)
 - Powered by [TubeTalk.ai FastAPI Backend](https://github.com/<your-username>/tubetalk-ai-api)
 - Icons from [Streamlit Emoji Shortcodes](https://streamlit-emoji-shortcodes-streamlit-app-gwckff.streamlit.app/)
+- CSS inspiration from modern web design trends
 
 ---
 
@@ -406,18 +479,6 @@ Student AI Engineer | Machine Learning Enthusiast
 
 ---
 
-## 🗺️ Roadmap
-
-- [ ] Add user authentication
-- [ ] Implement result export (PDF, CSV)
-- [ ] Add data visualization for topics
-- [ ] Multi-language support
-- [ ] Voice input for chatbot
-- [ ] Mobile app version
-- [ ] Offline mode support
-- [ ] Advanced analytics dashboard
-
----
 
 <div align="center">
 
@@ -425,6 +486,6 @@ Made with ❤️ and ☕ by [Pranay](https://github.com/pranay5519)
 
 ⭐ Star this repo if you find it useful!
 
-**[Backend Repository](https://github.com/<your-username>/tubetalk-ai-api)** | **[Report Bug](https://github.com/<your-username>/tubetalk-ai-streamlit/issues)** | **[Request Feature](https://github.com/<your-username>/tubetalk-ai-streamlit/issues)**
+**[Backend Repository](https://github.com/Pranay5519>/tubetalk-ai-api)** | **[Report Bug](https://github.com/Pranay5519/tubetalk-ai-streamlit/issues)** | **[Request Feature](https://github.com/Pranay5519/tubetalk-ai-streamlit/issues)**
 
 </div>
