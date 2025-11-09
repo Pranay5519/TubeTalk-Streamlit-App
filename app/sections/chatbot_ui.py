@@ -57,8 +57,10 @@ def render(video_url, thread_id,api_key_input):
         with st.spinner("📂 Loading chat history from DB..."):
             print("loading chat using: ",thread_id)
             messages = get_chat_history(thread_id=thread_id,api_key=api_key_input)
+            print("Loaded messages:", messages)
             # Clean unwanted system/debug messages
             cleaned_history = clean_history(messages)
+            print("Cleaned Messages" , cleaned_history)
             for msg in cleaned_history:
                 role = "user" if msg["type"] == "human" else "ai"
                 st.session_state.messages.append(

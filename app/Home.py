@@ -37,16 +37,17 @@ with st.sidebar.form("start_form"):
     submitted = st.form_submit_button("🚀 Start")
 
 # --- EXISTING THREAD IDS SECTION ---
-thread_ids = [tid for tid in get_thread_ids() if tid.strip() != ""]
+thread_ids = [tid for tid in get_thread_ids() if tid.strip() != ""] if get_thread_ids() else []
+
 print("Thread IDs:", thread_ids)
 
-if not st.session_state.api_key:
-    st.sidebar.markdown("### 🔑 Google API Key ")
-    api_key_input = st.sidebar.text_input(
-        "Enter your Google API Key", 
-        type="password", 
-        key="google_api_key_history"
-    )
+# if not session_state.api_key: ( Dont use these if here it will throw and error api key not defined)
+st.sidebar.markdown("### 🔑 Google API Key ")
+api_key_input = st.sidebar.text_input(
+    "Enter your Google API Key", 
+    type="password", 
+    key="google_api_key_history"
+)
 
 st.sidebar.markdown("### 💾 Saved Thread IDs")
 
@@ -57,7 +58,7 @@ for tid in thread_ids:
 
 # --- HANDLE START FORM SUBMISSION ---
 if submitted:
-    if video_url.strip() and thread_id_input.strip():
+    if video_url.strip() and thread_id_input.strip() and api_key_input.strip():
         st.session_state.thread_id = thread_id_input
         st.session_state.video_url = get_embed_url(video_url)
         st.session_state.api_key = api_key_input
@@ -75,7 +76,7 @@ if submitted:
 if clicked_thread:
     st.session_state.thread_id = clicked_thread
     st.session_state.video_url = get_embed_url(get_url_by_thread_id(clicked_thread)['url'])
-    st.session_state.api_key = api_key_input or st.session_state.api_key
+    st.session_state.api_key = api_key_input or st.session_state.api_key 
     st.session_state.started = True
     st.session_state.history_loaded = False
     st.session_state.embeddings_created = False
@@ -114,6 +115,7 @@ if st.session_state.started:
             st.session_state.history_loaded = False
             st.session_state.messages = []
             st.rerun()
+        st.text("Click aboave button for new chat")
     
     with col2:
         # Tabs for different features
