@@ -71,17 +71,45 @@ def render(video_url, thread_id,api_key_input):
     for idx, message in enumerate(st.session_state["messages"]):
         with st.chat_message(message["role"]):
             if message["role"] == "ai":
-                if "Timestamp:" in message["content"]:
-                    response_text, timestamp = map(
-                        str.strip, message["content"].split("Timestamp:")
-                    )
-                    st.text(response_text)
+
+                content = message["content"]
+
+                if "Timestamp:" in content:
+
+                    # Split Answer from rest
+                    response_part, rest = content.split("Timestamp:")
+
+                    # Split Timestamp from Code
+                    if "Code:" in rest:
+                        timestamp_part, code_part = rest.split("Code:")
+                        code = code_part.strip()
+                    else:
+                        timestamp_part = rest
+                        code = None
+
+                    response_text = response_part.strip()
+                    timestamp = timestamp_part.strip()
+
+                    # ----------------------------
+                    # Display Answer
+                    # ----------------------------
+                    st.markdown(response_text)
+
+                    # ----------------------------
+                    # Display Code (if present)
+                    # ----------------------------
+                    if code and code.lower() != "none":
+                        st.code(code, language="python")
+
+                    # ----------------------------
+                    # Watch Button
+                    # ----------------------------
                     if st.button("▶️ Watch", key=f"watch_{idx}"):
-                        # Update timestamp and refresh like Quiz UI
                         st.session_state.video_timestamp = int(float(timestamp))
                         st.rerun()
+
                 else:
-                    st.text(message["content"])
+                    st.text(content)
             else:
                 st.text(message["content"])
 

@@ -1,0 +1,17 @@
+.git
+.env
+.history
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.db
+.DS_Store
+requirements.txt
+Dockerfile
+.dockerignore
+folder_structure.txt
+get_folder_structure.py
+test.py
+test_notebook.ipynb
