@@ -6,7 +6,7 @@ def render(video_url, thread_id,api_key_input):
     def load_css(file_name):
         with open(file_name) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    load_css("app\styles\quiz.css")
+    load_css("app/styles/quiz.css")
     if "quiz_generated" not in st.session_state:
         st.session_state.quiz_generated = False
     if "quiz_data" not in st.session_state:

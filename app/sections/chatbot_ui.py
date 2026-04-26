@@ -42,7 +42,7 @@ def render(video_url, thread_id,api_key_input):
     # Step 1: Create embeddings only once
     if not st.session_state.embeddings_created:
         with st.spinner("🔄 Creating embeddings from the video transcript..."):
-            embeddings = create_embeddings(thread_id, video_url)
+            embeddings = create_embeddings(thread_id, video_url, api_key=api_key_input)
             if embeddings:
                 st.session_state.embeddings_created = True
                 if embeddings['type'] == "created":

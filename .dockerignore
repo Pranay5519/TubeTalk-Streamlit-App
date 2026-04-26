@@ -8,7 +8,6 @@ __pycache__
 *.pyd
 .db
 .DS_Store
-requirements.txt
 Dockerfile
 .dockerignore
 folder_structure.txt

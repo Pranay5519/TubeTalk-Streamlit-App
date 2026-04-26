@@ -88,7 +88,7 @@ def get_summary(thread_id: str, youtube_url: str, api_key : str):
         print(f"Error calling /summary/get_summary: {e}")
         return None
 
-def create_embeddings(thread_id: str, youtube_url: str):
+def create_embeddings(thread_id: str, youtube_url: str, api_key : str):
     """
     Calls /chatbot/create_embeddings to generate embeddings from a YouTube transcript.
     """
@@ -97,10 +97,13 @@ def create_embeddings(thread_id: str, youtube_url: str):
     payload = {
         "youtube_url": youtube_url,
         "thread_id": thread_id
+    }   
+    headers = {
+        "gemini-api-key": api_key
     }
     
     try:
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 200:
             return response.json()
         else:
