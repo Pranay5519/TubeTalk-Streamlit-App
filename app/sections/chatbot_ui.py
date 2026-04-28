@@ -2,7 +2,6 @@ import streamlit as st
 from app.utils.api_client import create_embeddings, chat_with_bot , get_chat_history
 from app.utils.utility_functions import get_embed_url
 
-
 def clean_history(message_history):
     """
     Remove unwanted system/debug messages from DB history
@@ -105,7 +104,13 @@ def render(video_url, thread_id,api_key_input):
                     # Watch Button
                     # ----------------------------
                     if st.button("▶️ Watch", key=f"watch_{idx}"):
-                        st.session_state.video_timestamp = int(float(timestamp))
+                        try:
+                            # Remove "s" or any other letters the AI might have accidentally included
+                            clean_timestamp = ''.join(c for c in timestamp if c.isdigit() or c == '.')
+                            st.session_state.video_timestamp = int(float(clean_timestamp))
+                        except (ValueError, TypeError):
+                            st.session_state.video_timestamp = 0
+                            st.warning("⚠️ Invalid timestamp format returned by the bot.")
                         st.rerun()
 
                 else:
